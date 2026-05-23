@@ -24,7 +24,8 @@ ignore = [
 ]
 
 [lint.per-file-ignores]
-"*_test.py" = ["S101", "ANN"]  # assert e tipos relaxados em teste
+"*_test.py" = ["S101", "ANN", "S603", "S607", "SIM117"]  # assert + tipos relaxados + subprocess + with-nested em teste
+"test_*.py" = ["S101", "ANN", "S603", "S607", "SIM117"]  # mesma regra para convenção pytest padrão (prefixo)
 
 [format]
 quote-style = "double"
