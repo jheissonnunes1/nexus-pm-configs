@@ -19,9 +19,7 @@ select = [
   "SIM",      # simplificações
   "RUF",
 ]
-ignore = [
-  "ANN101", "ANN102",  # self/cls não precisam de anotação
-]
+ignore = []
 
 [lint.per-file-ignores]
 "*_test.py" = ["S101", "ANN", "S603", "S607", "SIM117"]  # assert + tipos relaxados + subprocess + with-nested em teste
