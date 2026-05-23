@@ -1,0 +1,30 @@
+# Estilo mecânico do Python (workers). Rode: `ruff check .` e `ruff format .`
+# mypy/pyright rodam à parte para checagem de tipos profunda.
+# Canonical em nexus-pm/configs/ruff.toml — cópia em cada repo Python no root.
+# CI checa drift via nexus-pm/scripts/check-config-drift.sh.
+target-version = "py312"
+line-length = 100
+
+[lint]
+select = [
+  "E", "W",   # pycodestyle
+  "F",        # pyflakes
+  "I",        # isort (ordem de imports)
+  "UP",       # pyupgrade
+  "B",        # bugbear (armadilhas comuns)
+  "ANN",      # exige assinaturas tipadas
+  "S",        # bandit (segurança)
+  "ASYNC",    # boas práticas async
+  "T20",      # proíbe print() — use logging estruturado
+  "SIM",      # simplificações
+  "RUF",
+]
+ignore = [
+  "ANN101", "ANN102",  # self/cls não precisam de anotação
+]
+
+[lint.per-file-ignores]
+"*_test.py" = ["S101", "ANN"]  # assert e tipos relaxados em teste
+
+[format]
+quote-style = "double"
