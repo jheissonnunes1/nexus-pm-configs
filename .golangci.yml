@@ -1,36 +1,47 @@
 # Estilo mecânico do Go (control plane). Rode: `golangci-lint run`
-# OBS: o golangci-lint v2 mudou o schema do config — se usar v2, ajuste para o
-# formato `version: "2"`. Este é o formato v1, o mais documentado.
-# Canonical em nexus-pm/configs/.golangci.yml — cópia em cada repo Go no root.
-# CI checa drift via nexus-pm/scripts/check-config-drift.sh.
-run:
-  timeout: 5m
+# golangci-lint v2 schema. Canonical em nexus-pm-configs/.golangci.yml — cópia
+# em cada repo Go no root. CI checa drift contra esta cópia mirror.
+version: "2"
 
 linters:
   enable:
-    - govet
-    - errcheck       # erro nunca ignorado
-    - staticcheck
-    - ineffassign
-    - unused
-    - gosec          # segurança
-    - revive         # estilo e nomes exportados
-    - gofmt
-    - goimports
     - bodyclose      # fecha response body
     - contextcheck   # propagação de context
     - errorlint      # %w / errors.Is / errors.As
+    - gosec          # segurança
     - nilerr
-
-linters-settings:
-  revive:
+    - revive         # estilo e nomes exportados
+  settings:
+    revive:
+      rules:
+        - name: exported          # doc/nomes em identificador exportado
+        - name: error-naming
+        - name: error-strings
+        - name: context-as-argument
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
     rules:
-      - name: exported          # doc/nomes em identificador exportado
-      - name: error-naming
-      - name: error-strings
-      - name: context-as-argument
+      - linters:
+          - errcheck
+          - gosec
+        path: _test\.go
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
 
-issues:
-  exclude-rules:
-    - path: _test\.go
-      linters: [gosec, errcheck]
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
